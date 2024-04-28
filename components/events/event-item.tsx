@@ -22,14 +22,7 @@ export default function EventItem({ event }: EventItemProps) {
   const formattedAddress = location.replace(', ', '\n');
   return (
     <li className={classes.item}>
-      
-      
-        src={`/${image}`}
-        alt={title}
-        width={160}
-        height={160}
-        fetchPriority="high"
-      />
+      <Image src={`/${image}`} alt={title} width={160} height={160} />
       <div className={classes.container}>
         <div className={classes.content}>
           <div className={classes.summary}>
