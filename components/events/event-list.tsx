@@ -4,6 +4,7 @@ import classes from './event-list.module.css';
 export type EventType = {
   id: string;
   title: string;
+  description: string;
   image: string;
   date: string;
   location: string;
