@@ -1,5 +1,6 @@
 import EventList, { EventType } from '@/components/events/event-list';
 import { getFeaturedEvents } from '@/lib/events';
+import Head from 'next/head';
 
 type HomePageProps = {
   featuredEvents: EventType[];
@@ -8,6 +9,13 @@ type HomePageProps = {
 export default function HomePage({ featuredEvents }: HomePageProps) {
   return (
     <div>
+      <Head>
+        <title>NextJS Events</title>
+        <meta
+          name="description"
+          content="Find a lot of great events that allow you to evolve..."
+        />
+      </Head>
       <EventList events={featuredEvents} />
     </div>
   );

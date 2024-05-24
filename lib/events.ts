@@ -87,5 +87,5 @@ export async function getFilteredEvents(dateFilter: Record<string, string>) {
 
   return db
     .prepare(`SELECT * FROM events WHERE id > 0 ${where}`)
-    .all(...queryParams) as EventType[];
+    .all(queryParams) as EventType[];
 }

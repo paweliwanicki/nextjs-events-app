@@ -3,6 +3,7 @@ import ErrorAlert from '@/components/common/error-alert/error-alert';
 import EventList, { EventType } from '@/components/events/event-list';
 import ResultsTitle from '@/components/results-title/results-title';
 import { getFilteredEvents } from '@/lib/events';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 
 type FilteredEventsPageProps = {
@@ -22,13 +23,31 @@ export default function FilteredEventsPage({
   const router = useRouter();
   const filterData = router.query.slug;
 
+  let pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta name="description" content={`A list of filtered events`} />
+    </Head>
+  );
+
   if (!filterData) {
     return <p className="center">Loading...</p>;
   }
 
+  pageHeadData = (
+    <Head>
+      <title>Filtered Events</title>
+      <meta
+        name="description"
+        content={`All events for ${date.year}/${date.month}`}
+      />
+    </Head>
+  );
+
   if (hasError) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>Invalid filters data!</p>
         </ErrorAlert>
@@ -42,6 +61,7 @@ export default function FilteredEventsPage({
   if (!filteredEvents || !filteredEvents.length) {
     return (
       <>
+        {pageHeadData}
         <ErrorAlert>
           <p>No events found for the chosen filter!</p>
         </ErrorAlert>
@@ -54,6 +74,7 @@ export default function FilteredEventsPage({
 
   return (
     <>
+      {pageHeadData}
       <ResultsTitle date={new Date(date.year, date.month - 1)} />
       <EventList events={filteredEvents} />
     </>

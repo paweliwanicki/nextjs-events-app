@@ -27,7 +27,7 @@ export default function EventLogistics({
   return (
     <section className={classes.logistics}>
       <div className={classes.image}>
-        <Image src={`/${image}`} alt={imageAlt} width={160} height={160} />
+        <Image src={`/${image}`} alt={imageAlt} width={300} height={300} />
       </div>
       <ul className={classes.list}>
         <LogisticsItem icon={DateIcon}>

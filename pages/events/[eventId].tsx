@@ -4,6 +4,7 @@ import EventLogistics from '@/components/event-detail/event-logistics';
 import EventSummary from '@/components/event-detail/event-summary';
 import { EventType } from '@/components/events/event-list';
 import { getEventById, getFeaturedEvents } from '@/lib/events';
+import Head from 'next/head';
 
 type EventDetailPageProps = {
   event: EventType;
@@ -22,6 +23,10 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
 
   return (
     <>
+      <Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+      </Head>
       <EventSummary title={title} />
       <EventLogistics
         date={date}
