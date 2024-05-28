@@ -1,10 +1,13 @@
-import classes from './logistics-item.module.css';
+import classes from "./logistics-item.module.css";
 type LogisticsItemProps = {
   icon: () => React.ReactNode;
   children: React.ReactNode;
 };
 
-function LogisticsItem({ icon: Icon, children }: LogisticsItemProps) {
+export default function LogisticsItem({
+  icon: Icon,
+  children,
+}: LogisticsItemProps) {
   return (
     <li className={classes.item}>
       <span className={classes.icon}>
@@ -14,5 +17,3 @@ function LogisticsItem({ icon: Icon, children }: LogisticsItemProps) {
     </li>
   );
 }
-
-export default LogisticsItem;

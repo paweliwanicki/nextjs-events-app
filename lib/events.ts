@@ -1,7 +1,17 @@
-import { EventType } from '@/components/events/event-list';
-import sql from 'better-sqlite3';
+import { EventType } from "@/components/events/event-list";
+import sql from "better-sqlite3";
 
-const db = new sql('events-app.db');
+type EventsFilters = "year" | "month";
+
+export type CommentBody = {
+  id?: number;
+  email: string;
+  eventId: number;
+  text: string;
+  name: string;
+};
+
+export const db = new sql("events-app.db");
 
 function initDb() {
   db.exec(`CREATE TABLE IF NOT EXISTS events (
@@ -12,6 +22,15 @@ function initDb() {
     date INTEGER NOT NULL,
     image TEXT,
     isFeatured INTEGER
+  )`);
+
+  db.exec(`CREATE TABLE IF NOT EXISTS events_comments (
+    id INTEGER PRIMARY KEY,
+    eventId INTEGER NOT NULL,
+    email TEXT NOT NULL,
+    text TEXT NOT NULL,
+    name TEXT NOT NULL,
+    created_at INTEGER NOT NULL
   )`);
 
   db.exec(`INSERT INTO events (id, title, description, location, date, image, isFeatured)
@@ -57,20 +76,22 @@ function initDb() {
 initDb();
 
 export async function getAllEvents() {
-  return db.prepare('SELECT * FROM events').all() as EventType[];
+  return db.prepare("SELECT * FROM events").all() as EventType[];
 }
 
 export async function getFeaturedEvents() {
   return db
-    .prepare('SELECT * FROM events WHERE isFeatured = 1')
+    .prepare("SELECT * FROM events WHERE isFeatured = 1")
     .all() as EventType[];
 }
 
 export async function getEventById(id: number) {
-  return db.prepare('SELECT * FROM events WHERE id = ?').get(id) as EventType;
+  return db.prepare("SELECT * FROM events WHERE id = ?").get(id) as EventType;
 }
 
-export async function getFilteredEvents(dateFilter: Record<string, string>) {
+export async function getFilteredEvents(
+  dateFilter: Record<EventsFilters, string>
+) {
   let where;
   const queryParams = [];
   const { year, month } = dateFilter;
@@ -88,4 +109,23 @@ export async function getFilteredEvents(dateFilter: Record<string, string>) {
   return db
     .prepare(`SELECT * FROM events WHERE id > 0 ${where}`)
     .all(queryParams) as EventType[];
+}
+
+export async function getEventComments(eventId: number) {
+  return db
+    .prepare("SELECT id, name, text FROM events_comments WHERE eventId = ?")
+    .all(eventId) as CommentBody[];
+}
+
+export async function addEventComment(comment: CommentBody) {
+  const { id, eventId, name, email, text } = comment;
+  return db
+    .prepare(
+      "INSERT INTO events_comments (id, name, email, eventId, text, created_at) VALUES ( ?, ?, ?, ?, ?, ?)"
+    )
+    .run(id, name, email, eventId, text, Date.now());
+}
+
+export async function removeEventComment(commentId: number) {
+  return db.prepare("DELETE FROM events_comments WHERE id = ?").run(commentId);
 }

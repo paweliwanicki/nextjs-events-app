@@ -3,6 +3,7 @@ import EventContent from '@/components/event-detail/event-content';
 import EventLogistics from '@/components/event-detail/event-logistics';
 import EventSummary from '@/components/event-detail/event-summary';
 import { EventType } from '@/components/events/event-list';
+import Comments from '@/components/input/comments';
 import { getEventById, getFeaturedEvents } from '@/lib/events';
 import Head from 'next/head';
 
@@ -19,7 +20,7 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
     );
   }
 
-  const { title, date, location, image, description } = event;
+  const { id, title, date, location, image, description } = event;
 
   return (
     <>
@@ -37,6 +38,7 @@ export default function EventDetailPage({ event }: EventDetailPageProps) {
       <EventContent>
         <p>{description}</p>
       </EventContent>
+      <Comments eventId={id} />
     </>
   );
 }

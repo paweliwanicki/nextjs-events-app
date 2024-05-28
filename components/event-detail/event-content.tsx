@@ -4,8 +4,6 @@ type EventContentProps = {
   children: React.ReactNode;
 };
 
-function EventContent({ children }: EventContentProps) {
+export default function EventContent({ children }: EventContentProps) {
   return <section className={classes.content}>{children}</section>;
 }
-
-export default EventContent;
